@@ -1,0 +1,12 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
+
+html {
+  scroll-behavior: smooth;
+}
+
+pre {
+  white-space: pre-wrap; /* CSS 2.1, HTML5 */
+  word-wrap: break-word; /* IE 5.5+, Legacy: Safari 1.3+, Chrome 1+, Opera 3.5+ */
+  overflow-wrap: break-word; /* CSS 3.0 */
+  word-break: break-all; /* Handle long URLs or strings without spaces. Optional based on content */
+}
