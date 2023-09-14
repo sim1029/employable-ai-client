@@ -7,9 +7,11 @@ import InputForm from "./components/InputForm";
 import Response from "./components/Response";
 
 function App() {
-  const [linkedin, setLinkedin] = useState("");
-  const [company, setCompany] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [resumeFile, setResumeFile] = useState(null);
+  const [resumeFileError, setResumeFileError] = useState(null);
+  const [jobpostURLError, setJobpostURLError] = useState(null);
+  const [jobpostURL, setJobpostURL] = useState("");
+  const [loading, setLoading] = useState(false);
   const [clickedGenerate, setClickedGenerate] = useState(false);
   const [clipboardStatus, setClipboardStatus] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
@@ -21,49 +23,61 @@ function App() {
 
   const submitFunc = async (e) => {
     e.preventDefault();
-    return;
+    let isInputEmpty = false;
+    if (!resumeFile) {
+      setResumeFileError("File upload cannot be empty");
+      isInputEmpty = true;
+    }
+    if (!jobpostURL) {
+      setJobpostURLError("Job posting URL cannot be empty");
+      isInputEmpty = true;
+    }
+    if (isInputEmpty) return;
+    setResumeFileError(null);
+    setJobpostURLError(null);
     setClickedGenerate(true);
     setResponseMessage("");
-    setLoading(false);
+    setLoading(true);
     try {
-      const response = await fetch(`${backendURL}/generate`, {
+      // Create a FormData object to send the file and the jobpostingURL
+      const formData = new FormData();
+      formData.append("resumeFile", resumeFile);
+      formData.append("jobpostURL", jobpostURL);
+      const response = await fetch(`${backendURL}/upload`, {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          company_name: company,
-          linkedin_profile_url: linkedin,
-        }),
+        body: formData,
       });
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
 
-      const reader = response.body.getReader();
-      setLoading(true);
+      //   const reader = response.body.getReader();
+      const data = await response.json();
+      console.log(data);
+      setResponseMessage(data);
+      setLoading(false);
 
-      // eslint-disable-next-line no-constant-condition
-      while (true) {
-        const { done, value } = await reader.read();
+      //   // eslint-disable-next-line no-constant-condition
+      //   while (true) {
+      //     const { done, value } = await reader.read();
 
-        if (done) {
-          break;
-        }
+      //     if (done) {
+      //       break;
+      //     }
 
-        let decoded_val = new TextDecoder().decode(value);
-        setResponseMessage((prev) => prev + decoded_val);
-      }
+      //     let decoded_val = new TextDecoder().decode(value);
+      //     setResponseMessage((prev) => prev + decoded_val);
+      //   }
 
-      reader.releaseLock();
+      //   reader.releaseLock();
     } catch (error) {
       // Handle and log the error message
       console.error("Fetch error:", error.message);
 
       // Handle the error or take appropriate actions here
       setResponseMessage("Something went wrong");
-      setLoading(true);
+      setLoading(false);
     }
   };
 
@@ -73,7 +87,7 @@ function App() {
     if (clipboardStatus) {
       timer = setTimeout(() => {
         setClipboardStatus(false);
-      }, 3500);
+      }, 2000);
     }
     return () => {
       if (timer) {
@@ -81,16 +95,19 @@ function App() {
       }
     };
   }, [clipboardStatus]);
+
   return (
     <div>
       <div className="max-w-4xl mx-auto">
         <div className="bg-white">
           <Hero />
           <InputForm
-            linkedin={linkedin}
-            setLinkedin={setLinkedin}
-            company={company}
-            setCompany={setCompany}
+            resumeFile={resumeFile}
+            setResumeFile={setResumeFile}
+            resumeFileError={resumeFileError}
+            jobpostURLError={jobpostURLError}
+            jobpostURL={jobpostURL}
+            setJobpostURL={setJobpostURL}
             submitFunc={submitFunc}
             loading={loading}
           />

@@ -5,7 +5,7 @@ export default function Response(props) {
     <>
       {props.clickedGenerate && (
         <div className="border border-gray-200 bg-gray-100 p-4 rounded-lg mx-auto max-w-7xl px-6 lg:mx-8 mt-32">
-          {props.responseMessage && props.loading ? (
+          {props.responseMessage && !props.loading ? (
             <>
               <div className="flex justify-between mt-1">
                 <h2 className="text-2xl font-bold leading-10 tracking-tight text-gray-900">
@@ -17,7 +17,7 @@ export default function Response(props) {
                     className="inline-flex items-center gap-x-1.5 rounded-md bg-sky-500 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
                     onClick={() => {
                       props.setClipboardStatus(true);
-                      navigator.clipboard.writeText(responseMessage);
+                      navigator.clipboard.writeText(props.responseMessage);
                     }}
                   >
                     Copied to Clipboard!

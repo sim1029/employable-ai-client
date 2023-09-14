@@ -1,45 +1,44 @@
 export default function InputForm(props) {
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile.size > 2097152) {
+      alert("File size too large!");
+      return;
+    }
+    props.setResumeFile(selectedFile);
+  };
+
   return (
     <form
       onSubmit={(e) => props.submitFunc(e)}
       id="submit"
-      className="border border-gray-200 bg-gray-100 p-4 rounded-lg mx-auto max-w-7xl px-6 lg:mx-8 mt-32"
+      className="border border-gray-200 bg-gray-100 p-8 rounded-lg mx-auto max-w-7xl px-12 lg:mx-12 mt-32"
     >
+      <h2 className=" text-2xl font-bold leading-10 tracking-tight text-gray-900">
+        Cover letter generation tool
+      </h2>
+      <hr className="mt-10 space-y-6 divide-y divide-gray-900/10" />
+
       <div className="space-y-12">
         <div className="border-gray-900/10 pb-12 mt-4">
-          <div className="mx-auto max-w-xs">
+          <div className="flex max-w-xs pb-4">
             <label
               htmlFor="resume-input"
-              className="mb-1 block text-sm font-medium text-gray-700"
+              className="mb-1 block text-sm font-medium text-gray-900 after:ml-0.5"
             >
               Upload Your Resume
-            </label>
-            <label className="flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-300 p-6 transition-all hover:border-sky-500">
-              <div className="space-y-1 text-center">
-                <div className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    className="h-6 w-6 text-gray-500"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
-                    />
-                  </svg>
-                </div>
-                <div className="text-gray-600">
-                  Click to upload or drag and drop
-                </div>
-                <p className="text-sm text-gray-500">
-                  .pdf, .docx, or .txt up to 10MB
+              <input
+                id="resume-input"
+                type="file"
+                className="block file:mt-1 w-full text-xs file:mr-4 file:rounded-md text-gray-500 file:border-0 file:cursor-pointer file:bg-sky-500 file:py-2.5 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-sky-400 hover:cursor- focus:outline-none disabled:pointer-events-none disabled:opacity-60"
+                accept=".pdf,.docx,.txt"
+                onChange={(e) => handleFileChange(e)}
+              />
+              {props.resumeFileError && (
+                <p className="mt-1 text-sm text-red-500">
+                  {props.resumeFileError}
                 </p>
-              </div>
-              <input id="resume-input" type="file" className="sr-only" />
+              )}
             </label>
           </div>
 
@@ -66,22 +65,36 @@ export default function InputForm(props) {
                 />
               </svg>
             </span>
-
-            <input
-              type="text"
-              name="posting"
-              id="posting"
-              className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-sky-500 focus:border-sky-500 block flex-1 min-w-0 w-full text-sm p-2.5 "
-              placeholder="https://www.linkedin.com/jobs/pied-piper/jobs/12345/"
-              value={props.company}
-              onChange={(e) => props.setCompany(e.target.value)}
-            />
+            {props.jobpostURLError ? (
+              <input
+                type="text"
+                name="posting"
+                id="posting"
+                className="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-sky-500 focus:border-sky-500 border-red-500 block flex-1 min-w-0 w-full text-sm p-2.5 "
+                placeholder="https://www.linkedin.com/jobs/pied-piper/jobs/12345/"
+                value={props.jobpostURL}
+                onChange={(e) => props.setJobpostURL(e.target.value)}
+              />
+            ) : (
+              <input
+                type="text"
+                name="posting"
+                id="posting"
+                className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-sky-500 focus:border-sky-500 block flex-1 min-w-0 w-full text-sm p-2.5 "
+                placeholder="https://www.linkedin.com/jobs/pied-piper/jobs/12345/"
+                value={props.jobpostURL}
+                onChange={(e) => props.setJobpostURL(e.target.value)}
+              />
+            )}
           </div>
+          {props.jobpostURLError && (
+            <p className="mt-1 text-sm text-red-500">{props.jobpostURLError}</p>
+          )}
         </div>
       </div>
 
       <div className="mt-2 flex items-center justify-end gap-x-6">
-        {props.loading ? (
+        {!props.loading ? (
           <button
             type="submit"
             className="rounded-md bg-sky-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
