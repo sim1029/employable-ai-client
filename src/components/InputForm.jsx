@@ -1,46 +1,53 @@
 export default function InputForm(props) {
   return (
     <form
-      onSubmit={(e) => submitFunc(e)}
+      onSubmit={(e) => props.submitFunc(e)}
       id="submit"
       className="border border-gray-200 bg-gray-100 p-4 rounded-lg mx-auto max-w-7xl px-6 lg:mx-8 mt-32"
     >
       <div className="space-y-12">
         <div className="border-gray-900/10 pb-12 mt-4">
-          <label
-            htmlFor="linkedin"
-            className="block text-sm font-medium leading-6 text-gray-900"
-          >
-            LinkedIn Profile URL
-          </label>
-          <div className="flex">
-            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
-              <svg
-                className="w-4 h-4 text-gray-500"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 20 20"
-              >
-                <path d="M10 0a10 10 0 1 0 10 10A10.011 10.011 0 0 0 10 0Zm0 5a3 3 0 1 1 0 6 3 3 0 0 1 0-6Zm0 13a8.949 8.949 0 0 1-4.951-1.488A3.987 3.987 0 0 1 9 13h2a3.987 3.987 0 0 1 3.951 3.512A8.949 8.949 0 0 1 10 18Z" />
-              </svg>
-            </span>
-            <input
-              type="text"
-              id="linkedin"
-              name="linkedin"
-              className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 "
-              placeholder="https://linkedin.com/in/Richard-Hendricks"
-              value={props.linkedin}
-              onChange={(e) => props.setLinkedin(e.target.value)}
-            />
+          <div className="mx-auto max-w-xs">
+            <label
+              htmlFor="resume-input"
+              className="mb-1 block text-sm font-medium text-gray-700"
+            >
+              Upload Your Resume
+            </label>
+            <label className="flex w-full cursor-pointer appearance-none items-center justify-center rounded-md border-2 border-dashed border-gray-300 p-6 transition-all hover:border-sky-500">
+              <div className="space-y-1 text-center">
+                <div className="mx-auto inline-flex h-10 w-10 items-center justify-center rounded-full bg-gray-200">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth="1.5"
+                    stroke="currentColor"
+                    className="h-6 w-6 text-gray-500"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z"
+                    />
+                  </svg>
+                </div>
+                <div className="text-gray-600">
+                  Click to upload or drag and drop
+                </div>
+                <p className="text-sm text-gray-500">
+                  .pdf, .docx, or .txt up to 10MB
+                </p>
+              </div>
+              <input id="resume-input" type="file" className="sr-only" />
+            </label>
           </div>
 
           <label
-            htmlFor="company"
+            htmlFor="posting"
             className="block text-sm font-medium leading-6 text-gray-900 mt-4"
           >
-            Company
+            Job Posting
           </label>
           <div className="flex">
             <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
@@ -62,10 +69,10 @@ export default function InputForm(props) {
 
             <input
               type="text"
-              name="company"
-              id="company"
-              className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-blue-500 focus:border-blue-500 block flex-1 min-w-0 w-full text-sm p-2.5 "
-              placeholder="Pied Piper"
+              name="posting"
+              id="posting"
+              className="rounded-none rounded-r-lg bg-gray-50 border border-gray-300 text-gray-900 focus:ring-sky-500 focus:border-sky-500 block flex-1 min-w-0 w-full text-sm p-2.5 "
+              placeholder="https://www.linkedin.com/jobs/pied-piper/jobs/12345/"
               value={props.company}
               onChange={(e) => props.setCompany(e.target.value)}
             />
@@ -77,7 +84,7 @@ export default function InputForm(props) {
         {props.loading ? (
           <button
             type="submit"
-            className="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-sky-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
             onClick={(e) => props.submitFunc(e)}
           >
             Generate
@@ -85,7 +92,7 @@ export default function InputForm(props) {
         ) : (
           <button
             type="submit"
-            className="rounded-md bg-indigo-400 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+            className="rounded-md bg-sky-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
           >
             <div role="status">
               <svg

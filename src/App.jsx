@@ -5,7 +5,6 @@ import Faq from "./components/Faq";
 import Hero from "./components/Hero";
 import InputForm from "./components/InputForm";
 import Response from "./components/Response";
-import Logos from "./components/Logos";
 
 function App() {
   const [linkedin, setLinkedin] = useState("");
@@ -22,6 +21,7 @@ function App() {
 
   const submitFunc = async (e) => {
     e.preventDefault();
+    return;
     setClickedGenerate(true);
     setResponseMessage("");
     setLoading(false);
@@ -101,7 +101,6 @@ function App() {
             clipboardStatus={clipboardStatus}
             setClipboardStatus={setClipboardStatus}
           />
-          <Logos />
           <Faq />
         </div>
       </div>
