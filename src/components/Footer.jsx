@@ -3,6 +3,7 @@ import githubLogo from "/src/assets/github-logo.png";
 import emailLogo from "/src/assets/email-logo.png";
 
 const emailSubject = "Employable AI Inquiry";
+const emailAddress = "simon.paul.schueller@gmail.com";
 
 export default function Footer() {
   return (
@@ -22,7 +23,9 @@ export default function Footer() {
           <a
             target="_blank"
             rel="noreferrer"
-            href={`mailto:?subject=${encodeURIComponent(emailSubject)}`}
+            href={`mailto:${encodeURIComponent(
+              emailAddress,
+            )}?subject=${encodeURIComponent(emailSubject)}`}
           >
             <img src={emailLogo} className="w-8 h-auto" alt="LinkedinLogo" />
           </a>
