@@ -13,7 +13,6 @@ export default function Hero() {
               <h1 className="text-lg font-bold tracking-tight text-gray-900 sm:text-xl">
                 Employable AI
               </h1>
-              <span className="sr-only">Your Company</span>
               <img className="h-auto w-12" src={logoUrl} alt="" />
             </a>
           </div>

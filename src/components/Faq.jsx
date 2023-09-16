@@ -15,7 +15,7 @@ const faqs = [
   {
     question: "Is Employable AI free?",
     answer:
-      "<strong>Yes</strong>, Employable AI is free to use! But the GPT API calls become too expensive, I may take the site down...",
+      "<strong>Yes</strong>, Employable AI is free to use! But GPT-3.5 API calls are not free so we limit users to 2 cover letters per 24hrs unless they are premium subscribers",
   },
   {
     question: "Is Employable AI open Source?",

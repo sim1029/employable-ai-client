@@ -9,8 +9,9 @@ import Response from "./components/Response";
 function App() {
   const [resumeFile, setResumeFile] = useState(null);
   const [resumeFileError, setResumeFileError] = useState(null);
-  const [jobpostURLError, setJobpostURLError] = useState(null);
+  const [jobpostError, setJobpostError] = useState(null);
   const [jobpostURL, setJobpostURL] = useState("");
+  const [jobpostDesc, setJobpostDesc] = useState("");
   const [loading, setLoading] = useState(false);
   const [clickedGenerate, setClickedGenerate] = useState(false);
   const [clipboardStatus, setClipboardStatus] = useState(false);
@@ -28,13 +29,13 @@ function App() {
       setResumeFileError("File upload cannot be empty");
       isInputEmpty = true;
     }
-    if (!jobpostURL) {
-      setJobpostURLError("Job posting URL cannot be empty");
+    if (!jobpostURL && !jobpostDesc) {
+      setJobpostError("Fill in at least one Step 2 input");
       isInputEmpty = true;
     }
     if (isInputEmpty) return;
     setResumeFileError(null);
-    setJobpostURLError(null);
+    setJobpostError(null);
     setClickedGenerate(true);
     setResponseMessage("");
     setLoading(true);
@@ -43,7 +44,7 @@ function App() {
       const formData = new FormData();
       formData.append("resumeFile", resumeFile);
       formData.append("jobpostURL", jobpostURL);
-      const response = await fetch(`${backendURL}/upload`, {
+      const response = await fetch(`${backendURL}/generate`, {
         method: "POST",
         body: formData,
       });
@@ -52,25 +53,22 @@ function App() {
         throw new Error("Network response was not ok");
       }
 
-      //   const reader = response.body.getReader();
-      const data = await response.json();
-      console.log(data);
-      setResponseMessage(data);
+      const reader = response.body.getReader();
       setLoading(false);
 
-      //   // eslint-disable-next-line no-constant-condition
-      //   while (true) {
-      //     const { done, value } = await reader.read();
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const { done, value } = await reader.read();
 
-      //     if (done) {
-      //       break;
-      //     }
+        if (done) {
+          break;
+        }
 
-      //     let decoded_val = new TextDecoder().decode(value);
-      //     setResponseMessage((prev) => prev + decoded_val);
-      //   }
+        let decoded_val = new TextDecoder().decode(value);
+        setResponseMessage((prev) => prev + decoded_val);
+      }
 
-      //   reader.releaseLock();
+      reader.releaseLock();
     } catch (error) {
       // Handle and log the error message
       console.error("Fetch error:", error.message);
@@ -105,9 +103,12 @@ function App() {
             resumeFile={resumeFile}
             setResumeFile={setResumeFile}
             resumeFileError={resumeFileError}
-            jobpostURLError={jobpostURLError}
+            setResumeFileError={setResumeFileError}
+            jobpostError={jobpostError}
             jobpostURL={jobpostURL}
             setJobpostURL={setJobpostURL}
+            jobpostDesc={jobpostDesc}
+            setJobpostDesc={setJobpostDesc}
             submitFunc={submitFunc}
             loading={loading}
           />
