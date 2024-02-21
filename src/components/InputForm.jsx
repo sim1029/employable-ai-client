@@ -1,133 +1,90 @@
 export default function InputForm(props) {
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile.size > 2097152) {
-      props.setResumeFileError("File must be <2 Mb");
-      return;
-    }
-    props.setResumeFile(selectedFile);
-  };
-  console.log(props.jobpostError);
-
   return (
     <form
       onSubmit={(e) => props.submitFunc(e)}
       id="submit"
-      className="border border-gray-200 bg-gray-100 p-8 rounded-lg mx-auto max-w-7xl px-12 lg:mx-12 mt-32"
+      className="border border-gray-200 bg-gray-100 rounded-lg mx-auto max-w-7xl p-8 lg:mx-8 mt-32"
     >
-      <div className="space-y-12">
-        <div className="border-gray-900/10 pb-12">
-          <h1 className="text-2xl tracking-tight font-bold text-gray-900">
-            Candidate Context
-          </h1>
-          <h2 className="mt-2 text-md tracking-tight text-gray-900">
-            Tell us about yourself by uploading your resume as a{" "}
-            <strong>.pdf</strong> or <strong>.docx</strong>
-          </h2>
-          <hr className="mt-2 divide-y divide-gray-900/10 mb-8" />
-          <div className="flex flex-col max-w-xs pb-4">
+      <div className="border-gray-900/10">
+        <h1 className="text-2xl tracking-tight font-bold text-gray-900">
+          Candidate Context
+        </h1>
+        <hr className="mt-2 divide-y divide-gray-900/10 mb-4" />
+        <div className="flex flex-col">
+          {props.linkedinError ? (
             <label
-              htmlFor="resume-input"
+              htmlFor="linkedin-input"
+              className="mb-1 block text-sm font-medium text-red-500"
+            >
+              {props.linkedinError}
+            </label>
+          ) : (
+            <label
+              htmlFor="linkedin-input"
               className="mb-1 block text-sm font-medium text-gray-900 after:ml-0.5 after:text-red-500 after:content-['*']"
             >
-              Upload Your Resume
+              Upload Your Linkedin Profile
             </label>
+          )}
+          <div className="flex">
+            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="w-5 h-5"
+              >
+                <path d="M12.232 4.232a2.5 2.5 0 0 1 3.536 3.536l-1.225 1.224a.75.75 0 0 0 1.061 1.06l1.224-1.224a4 4 0 0 0-5.656-5.656l-3 3a4 4 0 0 0 .225 5.865.75.75 0 0 0 .977-1.138 2.5 2.5 0 0 1-.142-3.667l3-3Z" />
+                <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z" />
+              </svg>
+            </span>
             <input
-              id="resume-input"
-              type="file"
-              className="block file:mt-1 w-full text-xs file:mr-4 file:rounded-md text-gray-500 file:border-0 file:cursor-pointer file:bg-sky-500 file:py-2.5 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-sky-400 hover:cursor- focus:outline-none disabled:pointer-events-none disabled:opacity-60"
-              accept=".pdf,.docx"
-              onChange={(e) => handleFileChange(e)}
+              type="text"
+              name="linkedin"
+              id="linkedin"
+              className={`rounded-none rounded-r-lg shadow-sm bg-gray-50 border border-gray-300 text-gray-900 focus:ring-sky-500 focus:border-sky-500 flex-1 min-w-0 text-sm p-2.5 ${
+                props.linkedinError ? "border-red-500" : ""
+              }`}
+              placeholder="https://www.linkedin.com/RichardHendricks"
+              value={props.linkedinURL}
+              onChange={(e) => props.setLinkedinURL(e.target.value)}
             />
-            {props.resumeFileError && (
-              <p className="mt-1 text-sm text-red-500">
-                {props.resumeFileError}
-              </p>
-            )}
           </div>
+        </div>
 
-          <h1 className="text-2xl tracking-tight font-bold text-gray-900 mt-12">
-            Role Context
-          </h1>
-          <h2 className="mt-2 text-md tracking-tight text-gray-900">
-            Input job posting URL, company name + job title, or copy and paste
-            the job description directly <strong>(Best Results)</strong>
-          </h2>
-          <hr className="mt-2 divide-y divide-gray-900/10 mb-8" />
-          <div className="flex flex-col mb-4">
-            <label
-              htmlFor="posting"
-              className="block text-sm font-medium leading-6 text-gray-900"
-            >
-              Job Posting
-            </label>
-            <div className="flex">
-              <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-4 h-4 font-semibold text-gray-500"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M3.75 21h16.5M4.5 3h15M5.25 3v18m13.5-18v18M9 6.75h1.5m-1.5 3h1.5m-1.5 3h1.5m3-6H15m-1.5 3H15m-1.5 3H15M9 21v-3.375c0-.621.504-1.125 1.125-1.125h3.75c.621 0 1.125.504 1.125 1.125V21"
-                  />
-                </svg>
-              </span>
-              {props.jobpostError ? (
-                <input
-                  type="text"
-                  name="posting"
-                  id="posting"
-                  className="rounded-none rounded-r-lg bg-gray-50 border text-gray-900 focus:ring-sky-500 focus:border-sky-500 border-red-500 block flex-1 min-w-0 w-full text-sm p-2.5 shadow-sm"
-                  placeholder="https://www.linkedin.com/jobs/pied-piper/jobs/12345/"
-                  value={props.jobpostURL}
-                  onChange={(e) => props.setJobpostURL(e.target.value)}
-                />
-              ) : (
-                <input
-                  type="text"
-                  name="posting"
-                  id="posting"
-                  className="rounded-none rounded-r-lg bg-gray-50 border shadow-sm border-gray-300 text-gray-900 focus:ring-sky-500 focus:border-sky-500 block flex-1 min-w-0 w-full text-sm p-2.5"
-                  placeholder="https://www.linkedin.com/jobs/pied-piper/jobs/12345/"
-                  value={props.jobpostURL}
-                  onChange={(e) => props.setJobpostURL(e.target.value)}
-                />
-              )}
-            </div>
-            <p className="text-xs mt-1">
-              Job Posting URL <strong>OR</strong> Company Name + Job Title
-            </p>
-            {props.jobpostError && (
-              <p className="mt-1 text-sm text-red-500">{props.jobpostError}</p>
-            )}
-          </div>
-
-          <div className="w-full mt-8">
+        <h1 className="text-2xl tracking-tight font-bold text-gray-900 mt-8">
+          Role Context
+        </h1>
+        <hr className="mt-2 divide-y divide-gray-900/10 mb-4" />
+        <div className="w-full">
+          {props.jobpostError ? (
             <label
               htmlFor="postingDescription"
-              className="mb-1 block text-sm font-medium text-gray-900"
+              className="mb-1 block text-sm font-medium text-red-500"
+            >
+              {props.jobpostError}
+            </label>
+          ) : (
+            <label
+              htmlFor="postingDescription"
+              className="mb-1 block text-sm font-medium text-gray-900 after:text-red-500 after:content-['*']"
             >
               Job Posting <strong>Text</strong> description
             </label>
-            <textarea
-              id="postingDescription"
-              className="block w-full rounded-md shadow-sm bg-gray-50 border border-gray-300 text-gray-900 focus:ring-sky-500 focus:border-sky-500 flex-1 min-w-0 text-sm p-2.5"
-              rows="3"
-              placeholder="Leave a message"
-            ></textarea>
-            <p className="mt-1 text-sm text-gray-500">
-              Copy and paste the posting text directly
-            </p>
-            {props.jobpostError && (
-              <p className="mt-1 text-sm text-red-500">{props.jobpostError}</p>
-            )}
-          </div>
+          )}
+          <textarea
+            id="postingDescription"
+            className={`block w-full rounded-md shadow-sm bg-gray-50 border border-gray-300 text-gray-900 focus:ring-sky-500 focus:border-sky-500 flex-1 min-w-0 text-sm p-2.5 ${
+              props.jobpostError ? "border-red-500" : ""
+            }`}
+            rows="3"
+            placeholder="For the role of SWE II at Pied Piper, we are looking for a candidate who..."
+            value={props.jobpostDesc}
+            onChange={(e) => props.setJobpostDesc(e.target.value)}
+          ></textarea>
+          <p className="mt-1 text-sm text-gray-500">
+            Copy and paste the posting text directly
+          </p>
         </div>
       </div>
 
@@ -136,19 +93,20 @@ export default function InputForm(props) {
           <button
             type="submit"
             className="rounded-md bg-sky-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
-            onClick={(e) => props.submitFunc(e)}
           >
             Generate
           </button>
         ) : (
           <button
             type="submit"
-            className="rounded-md bg-sky-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500"
+            className={`rounded-md bg-sky-300 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-sky-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-500 pointer-events-none`}
           >
             <div role="status">
               <svg
                 aria-hidden="true"
-                className="inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
+                className={`inline w-6 h-6 text-gray-200 animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300 ${
+                  props.loading ? "opacity-50" : ""
+                }`}
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
