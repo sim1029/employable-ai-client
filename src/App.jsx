@@ -7,11 +7,10 @@ import InputForm from "./components/InputForm";
 import Response from "./components/Response";
 
 function App() {
-  const [resumeFile, setResumeFile] = useState(null);
-  const [resumeFileError, setResumeFileError] = useState(null);
-  const [jobpostError, setJobpostError] = useState(null);
-  const [jobpostURL, setJobpostURL] = useState("");
+  const [linkedinError, setLinkedinError] = useState("");
+  const [linkedinURL, setLinkedinURL] = useState("");
   const [jobpostDesc, setJobpostDesc] = useState("");
+  const [jobpostError, setJobpostError] = useState("");
   const [loading, setLoading] = useState(false);
   const [clickedGenerate, setClickedGenerate] = useState(false);
   const [clipboardStatus, setClipboardStatus] = useState(false);
@@ -25,28 +24,32 @@ function App() {
   const submitFunc = async (e) => {
     e.preventDefault();
     let isInputEmpty = false;
-    if (!resumeFile) {
-      setResumeFileError("File upload cannot be empty");
+    if (linkedinURL == "") {
+      setLinkedinError("LinkedIn URL is required");
       isInputEmpty = true;
     }
-    if (!jobpostURL && !jobpostDesc) {
-      setJobpostError("Fill in at least one Step 2 input");
+    if (jobpostDesc == "") {
+      setJobpostError("Job posting description is required");
       isInputEmpty = true;
     }
     if (isInputEmpty) return;
-    setResumeFileError(null);
-    setJobpostError(null);
+    setLinkedinError("");
+    setJobpostError("");
     setClickedGenerate(true);
     setResponseMessage("");
     setLoading(true);
     try {
       // Create a FormData object to send the file and the jobpostingURL
-      const formData = new FormData();
-      formData.append("resumeFile", resumeFile);
-      formData.append("jobpostURL", jobpostURL);
+
+      const data = {
+        linkedinURL,
+        jobpostDesc,
+      };
+
       const response = await fetch(`${backendURL}/generate`, {
         method: "POST",
-        body: formData,
+        body: JSON.stringify(data),
+        headers: { "content-type": "application/json" },
       });
 
       if (!response.ok) {
@@ -54,13 +57,13 @@ function App() {
       }
 
       const reader = response.body.getReader();
-      setLoading(false);
 
       // eslint-disable-next-line no-constant-condition
       while (true) {
         const { done, value } = await reader.read();
 
         if (done) {
+          setLoading(false);
           break;
         }
 
@@ -100,15 +103,12 @@ function App() {
         <div className="bg-white">
           <Hero />
           <InputForm
-            resumeFile={resumeFile}
-            setResumeFile={setResumeFile}
-            resumeFileError={resumeFileError}
-            setResumeFileError={setResumeFileError}
-            jobpostError={jobpostError}
-            jobpostURL={jobpostURL}
-            setJobpostURL={setJobpostURL}
+            linkedinError={linkedinError}
+            linkedinURL={linkedinURL}
+            setLinkedinURL={setLinkedinURL}
             jobpostDesc={jobpostDesc}
             setJobpostDesc={setJobpostDesc}
+            jobpostError={jobpostError}
             submitFunc={submitFunc}
             loading={loading}
           />
