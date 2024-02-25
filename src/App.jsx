@@ -21,9 +21,9 @@ function App() {
   if (import.meta.env.VITE_ENV === "local") {
     backendURL = "http://localhost:8000";
   } else if (import.meta.env.VITE_ENV === "dev") {
-    backendURL = "https://prod-employable-ai-worker-skkvtxqvla-ue.a.run.app";
+    backendURL = "https://dev-employable-ai-worker-skkvtxqvla-ue.a.run.app";
   } else {
-    backendURL = "https://prod-employable-ai-worker-skkvtxqvla-ue.a.run.app";
+    backendURL = "https://employable-ai-worker-skkvtxqvla-ue.a.run.app";
   }
 
   const submitFunc = async (e) => {
