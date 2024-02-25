@@ -16,10 +16,15 @@ function App() {
   const [clipboardStatus, setClipboardStatus] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
 
-  const backendURL =
-    import.meta.env.VITE_ENV === "dev"
-      ? "http://localhost:8000"
-      : "https://hmp-api-w4e4bniyjq-ue.a.run.app";
+  let backendURL;
+
+  if (import.meta.env.VITE_ENV === "local") {
+    backendURL = "http://localhost:8000";
+  } else if (import.meta.env.VITE_ENV === "dev") {
+    backendURL = "https://prod-employable-ai-worker-skkvtxqvla-ue.a.run.app";
+  } else {
+    backendURL = "https://prod-employable-ai-worker-skkvtxqvla-ue.a.run.app";
+  }
 
   const submitFunc = async (e) => {
     e.preventDefault();
