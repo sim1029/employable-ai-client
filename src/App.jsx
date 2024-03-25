@@ -7,8 +7,8 @@ import InputForm from "./components/InputForm";
 import Response from "./components/Response";
 
 function App() {
-  const [linkedinError, setLinkedinError] = useState("");
-  const [linkedinURL, setLinkedinURL] = useState("");
+  const [resumeFileError, setResumeFileError] = useState(null);
+  const [resumeFile, setResumeFile] = useState(null);
   const [jobpostDesc, setJobpostDesc] = useState("");
   const [jobpostError, setJobpostError] = useState("");
   const [loading, setLoading] = useState(false);
@@ -29,8 +29,8 @@ function App() {
   const submitFunc = async (e) => {
     e.preventDefault();
     let isInputEmpty = false;
-    if (linkedinURL == "") {
-      setLinkedinError("LinkedIn URL is required");
+    if (!resumeFile) {
+      setResumeFileError("A resume is required");
       isInputEmpty = true;
     }
     if (jobpostDesc == "") {
@@ -38,7 +38,7 @@ function App() {
       isInputEmpty = true;
     }
     if (isInputEmpty) return;
-    setLinkedinError("");
+    setResumeFileError("");
     setJobpostError("");
     setClickedGenerate(true);
     setResponseMessage("");
@@ -46,15 +46,13 @@ function App() {
     try {
       // Create a FormData object to send the file and the jobpostingURL
 
-      const data = {
-        linkedinURL,
-        jobpostDesc,
-      };
+      const formData = new FormData();
+      formData.append("resumeFile", resumeFile);
+      formData.append("jobpostDesc", jobpostDesc);
 
       const response = await fetch(`${backendURL}/generate`, {
         method: "POST",
-        body: JSON.stringify(data),
-        headers: { "content-type": "application/json" },
+        body: formData,
       });
 
       if (!response.ok) {
@@ -108,9 +106,9 @@ function App() {
         <div className="bg-white">
           <Hero />
           <InputForm
-            linkedinError={linkedinError}
-            linkedinURL={linkedinURL}
-            setLinkedinURL={setLinkedinURL}
+            resumeFileError={resumeFileError}
+            resumeFile={resumeFile}
+            setResumeFile={setResumeFile}
             jobpostDesc={jobpostDesc}
             setJobpostDesc={setJobpostDesc}
             jobpostError={jobpostError}

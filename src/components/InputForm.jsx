@@ -1,4 +1,14 @@
 export default function InputForm(props) {
+  const handleFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile.size > 2097152) {
+      alert("File size too large!");
+      props.setResumeFileError("File must be <2 Mb");
+      return;
+    }
+    props.setResumeFile(selectedFile);
+  };
+
   return (
     <form
       onSubmit={(e) => props.submitFunc(e)}
@@ -11,45 +21,29 @@ export default function InputForm(props) {
         </h1>
         <hr className="mt-2 divide-y divide-gray-900/10 mb-4" />
         <div className="flex flex-col">
-          {props.linkedinError ? (
+          {props.resumeFileError ? (
             <label
-              htmlFor="linkedin-input"
+              htmlFor="resume-file-input"
               className="mb-1 block text-sm font-medium text-red-500"
             >
-              {props.linkedinError}
+              {props.resumeFileError}
             </label>
           ) : (
             <label
-              htmlFor="linkedin-input"
+              htmlFor="resume-file-input"
               className="mb-1 block text-sm font-medium text-gray-900 after:ml-0.5 after:text-red-500 after:content-['*']"
             >
-              Upload Your Linkedin Profile
+              Upload Your Resume
             </label>
           )}
-          <div className="flex">
-            <span className="inline-flex items-center px-3 text-sm text-gray-900 bg-gray-200 border border-r-0 border-gray-300 rounded-l-md">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-                className="w-5 h-5"
-              >
-                <path d="M12.232 4.232a2.5 2.5 0 0 1 3.536 3.536l-1.225 1.224a.75.75 0 0 0 1.061 1.06l1.224-1.224a4 4 0 0 0-5.656-5.656l-3 3a4 4 0 0 0 .225 5.865.75.75 0 0 0 .977-1.138 2.5 2.5 0 0 1-.142-3.667l3-3Z" />
-                <path d="M11.603 7.963a.75.75 0 0 0-.977 1.138 2.5 2.5 0 0 1 .142 3.667l-3 3a2.5 2.5 0 0 1-3.536-3.536l1.225-1.224a.75.75 0 0 0-1.061-1.06l-1.224 1.224a4 4 0 1 0 5.656 5.656l3-3a4 4 0 0 0-.225-5.865Z" />
-              </svg>
-            </span>
-            <input
-              type="text"
-              name="linkedin"
-              id="linkedin"
-              className={`rounded-none rounded-r-lg shadow-sm bg-gray-50 border border-gray-300 text-gray-900 focus:ring-sky-500 focus:border-sky-500 flex-1 min-w-0 text-sm p-2.5 ${
-                props.linkedinError ? "border-red-500" : ""
-              }`}
-              placeholder="https://www.linkedin.com/RichardHendricks"
-              value={props.linkedinURL}
-              onChange={(e) => props.setLinkedinURL(e.target.value)}
-            />
-          </div>
+
+          <input
+            id="resume-input"
+            type="file"
+            className="block file:mt-1 w-full text-xs file:mr-4 file:rounded-md text-gray-500 file:border-0 file:cursor-pointer file:bg-sky-500 file:py-2.5 file:px-4 file:text-sm file:font-semibold file:text-white hover:file:bg-sky-400 hover:cursor- focus:outline-none disabled:pointer-events-none disabled:opacity-60"
+            accept=".pdf,.docx,.txt"
+            onChange={(e) => handleFileChange(e)}
+          />
         </div>
 
         <h1 className="text-2xl tracking-tight font-bold text-gray-900 mt-8">
